@@ -1,61 +1,57 @@
-# template-public-package
+<h1 align="center">server-toolkit</h1>
+<p align="center"><strong>🔧🖥️ Modern, composable tools for writing servers in Node, Deno and Bun</strong></p>
 
-**🚀 Boilerplate template to kick start new public packages at Peerigon**
+<p align="center">
+  <a href="https://www.npmjs.com/package/@peerigon/server-toolkit"><img src="https://img.shields.io/npm/v/@peerigon/server-toolkit?style=for-the-badge" alt="Version on NPM" /></a>
+  <a href="https://jsr.io/@peerigon/server-toolkit"><img src="https://img.shields.io/jsr/v/@peerigon/server-toolkit?style=for-the-badge" alt="Version on JSR" /></a>
+  <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=for-the-badge" alt="Semantically released" /></a>
+  <a href="https://www.npmjs.com/package/@peerigon/server-toolkit"><img src="https://img.shields.io/npm/dm/@peerigon/server-toolkit?style=for-the-badge" alt="Monthly downloads on NPM" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/npm/l/@peerigon/server-toolkit?style=for-the-badge" alt="License" /></a>
+</p>
 
-[![Version on NPM](https://img.shields.io/npm/v/@peerigon/template-public-package?style=for-the-badge)](https://www.npmjs.com/package/@peerigon/template-public-package)
-[![Version on JSR](https://img.shields.io/jsr/v/@peerigon/template-public-package?style=for-the-badge)](https://jsr.io/@peerigon/template-public-package)
-[![Semantically released](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=for-the-badge)](https://github.com/semantic-release/semantic-release)
-[![Monthly downloads on NPM](https://img.shields.io/npm/dm/@peerigon/template-public-package?style=for-the-badge)](https://www.npmjs.com/package/@peerigon/template-public-package)<br>
-[![License](https://img.shields.io/npm/l/@peerigon/template-public-package?style=for-the-badge)](./LICENSE)
+<p align="center">
+  Small, focused server-side utilities you import one at a time.
+</p>
 
 ## Features
 
-- 🚀 Zero dependencies
-- 📱 Works in all modern browsers
-- 🎯 Accurate calculations
+- 🎯 High-quality module design, focused on modern server code
+- 🌐 Node-first, with Deno and Bun compatibility in mind
+- ⚡ Lightweight sub-package exports
 - 📦 Tree-shakeable ES modules
-- 💪 TypeScript support
-- ⚡ Lightweight (~3KB gzipped)
+- 🧩 Modular and composable
+- ✅ Zero dependencies
 
 ## Installation
 
 ```sh
-npm install @peerigon/template-public-package  --save
+npm install @peerigon/server-toolkit --save
 ```
+
+Also available on [JSR](https://jsr.io/@peerigon/server-toolkit).
 
 ## Usage
 
-### Adding numbers
+Import only the utilities you need. Each one is exposed as its own subpath:
 
-```javascript
-import { add } from "@peerigon/template-public-package";
-
-add(1, 2); // 3
+```ts
+import { parsePort } from "@peerigon/server-toolkit/parse-port";
 ```
 
-## API Reference
+## Utilities
 
-### `add()`
-
-Adds two numbers.
-
-```javascript
-import { add } from "@peerigon/template-public-package";
-
-add(1, 2); // 3
-```
-
-**Parameters**:
-
-- `a` (number): The first number
-- `b` (number): The second number
-
-**Returns**: `number` - Result of the addition
+| Module                                     | Description                                           | Docs                            |
+| ------------------------------------------ | ----------------------------------------------------- | ------------------------------- |
+| [`parse-port`](./src/parse-port/README.md) | Parse and validate a TCP port from a string or number | [→](./src/parse-port/README.md) |
 
 ## License
 
-MIT
+[MIT](./LICENSE)
 
 ## Sponsors
 
-[<img src="https://assets.peerigon.com/peerigon/logo/peerigon-logo-flat-spinat.png" width="150" />](https://peerigon.com)
+<p align="center">
+  <a href="https://peerigon.com">
+    <img src="https://assets.peerigon.com/peerigon/logo/peerigon-logo-flat-spinat.png" width="150" alt="Peerigon" />
+  </a>
+</p>

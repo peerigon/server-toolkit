@@ -4,6 +4,10 @@ This file provides guidance to AI coding assistants when working with code in th
 
 **Important**: You **must** follow [these rules](./node_modules/@peerigon/configs/ai/rules.mdc) and its language-specific rules referenced in that file.
 
+## Project Context
+
+**server-toolkit** is a collection of well-designed, modern tools for writing servers in Node, Deno and Bun. Node is the primary target; utilities should stay compatible with Deno and Bun where reasonably possible. The focus is on modern, composable design over minimal file size — but every utility is still modular enough to import on its own.
+
 ## Keeping This File Updated
 
 When you make changes to the project that affect how AI agents should work with the codebase, update this file accordingly. This includes changes to:
@@ -33,15 +37,19 @@ This project uses npm scripts for all development tasks:
 
 ## Project Structure
 
-- **Source**: `src/` - All source code and tests
+- **Source**: `src/` - Each utility lives in its own folder, e.g. `src/parse-port/`
 - **Tests**: Co-located with source files using `.test.ts` suffix
+- **Docs**: Each utility folder has its own `README.md`, linked from the root `README.md` utilities table
 - **Configuration**: Uses `@peerigon/configs` for shared TypeScript, ESLint, and Oxfmt configs
 
 ## Code Organization
 
-- Functions are implemented in individual files in `src/`
-- Each function has comprehensive unit tests using Vitest
+- Each utility is a self-contained folder: `src/<utility>/<utility>.ts`, `<utility>.test.ts`, and `README.md`
+- Utilities are exposed as individual subpath exports (e.g. `@peerigon/server-toolkit/parse-port`) — never through a single barrel/main entry point
+- Every new utility needs matching entries in `package.json#exports` and `jsr.json#exports`, plus a row in the root `README.md` utilities table
+- Each utility has comprehensive unit tests using Vitest
 - Uses ES module syntax throughout (`.ts` extensions in imports)
+- Prefer Web-standard and Node-standard APIs (e.g. `AbortSignal`, `fetch`, `node:*` built-ins available across runtimes) over Node-only APIs to keep utilities portable to Deno and Bun; call out in a utility's README if it is Node-only
 - **Environment variables**: Use `src/env.ts`; destructure at top-level module scope so missing vars fail immediately.
 
 ## Commit Messages
