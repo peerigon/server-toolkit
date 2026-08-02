@@ -1,0 +1,4 @@
+# Read by mise locally and by setup-bun/setup-deno in CI.
+# The Node.js version is pinned in package.json (devEngines.runtime).
+bun 1.3.14
+deno 2.9.0

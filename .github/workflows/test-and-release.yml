@@ -11,6 +11,96 @@ on:
 permissions: {}
 
 jobs:
+  test-bun:
+    name: 🧪 Test (Bun)
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+
+    concurrency:
+      group: ${{ github.workflow }}-test-bun-${{ github.ref }}
+      cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/beta' }}
+
+    permissions:
+      actions: write
+      contents: read
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: "package.json"
+
+      - name: 🟡 Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: .tool-versions
+
+      - name: 🗄 Cache node_modules
+        id: cache-node_modules
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: "**/node_modules"
+          key: node_modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: 🔍 Install dependencies
+        if: steps.cache-node_modules.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts --prefer-offline --no-audit --strict-peer-deps
+
+      # `--bun` is required: the vitest bin has a `#!/usr/bin/env node` shebang
+      # which `bun run` would honor, running the tests on Node instead of Bun.
+      # Coverage is disabled because Bun's `node:inspector` does not implement
+      # the V8 coverage APIs. Coverage is collected in the Node job anyway.
+      - name: 🧪 Run unit tests
+        run: bun --bun run test:unit --coverage.enabled=false
+
+  test-deno:
+    name: 🧪 Test (Deno)
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+
+    concurrency:
+      group: ${{ github.workflow }}-test-deno-${{ github.ref }}
+      cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/beta' }}
+
+    permissions:
+      actions: write
+      contents: read
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: "package.json"
+
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
+        with:
+          deno-version-file: .tool-versions
+
+      - name: 🗄 Cache node_modules
+        id: cache-node_modules
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: "**/node_modules"
+          key: node_modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: 🔍 Install dependencies
+        if: steps.cache-node_modules.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts --prefer-offline --no-audit --strict-peer-deps
+
+      - name: 🧪 Run unit tests
+        run: deno run -A npm:vitest run
+
   test-and-release:
     name: 🧪 Test and 🚀 Release
     runs-on: ubuntu-latest
